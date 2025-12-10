@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.warranty</groupId>
@@ -20,6 +21,7 @@
     </properties>
 
     <dependencies>
+
         <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -50,7 +52,7 @@
             <version>8.0.33</version>
         </dependency>
 
-        <!-- Apache POI for Excel -->
+        <!-- Apache POI -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -76,28 +78,28 @@
             <version>2.11.0</version>
         </dependency>
 
-        <!-- BCrypt for password hashing -->
+        <!-- BCrypt -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
 
-        <!-- Gson for JSON -->
+        <!-- Gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
 
-        <!-- JavaMail API -->
+        <!-- JavaMail -->
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
         </dependency>
 
-        <!-- iText for PDF generation -->
+        <!-- iText -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
@@ -116,20 +118,38 @@
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.7</version>
         </dependency>
+
     </dependencies>
 
     <build>
         <finalName>warranty-system</finalName>
+
         <plugins>
+
+            <!-- FIX QUAN TRỌNG: bắt Maven đóng gói WAR đầy đủ -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
                 <configuration>
+                    <!-- KHÔNG có web.xml vẫn build WAR -->
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+
+                    <!-- Copy toàn bộ webapp -->
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
+
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
-            
+
+            <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -139,6 +159,9 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+
         </plugins>
+
     </build>
+
 </project>

@@ -97,25 +97,7 @@
         <url-pattern>/technician/create-intake-ticket</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>TechnicianDashboardServlet</servlet-name>
-        <servlet-class>com.warranty.servlet.TechnicianDashboardServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TechnicianDashboardServlet</servlet-name>
-        <url-pattern>/technician/dashboard</url-pattern>
-    </servlet-mapping>
-
     <!-- Technical Manager Servlets -->
-    <servlet>
-        <servlet-name>TechManagerDashboardServlet</servlet-name>
-        <servlet-class>com.warranty.servlet.TechManagerDashboardServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TechManagerDashboardServlet</servlet-name>
-        <url-pattern>/tech-manager/dashboard</url-pattern>
-    </servlet-mapping>
-
     <servlet>
         <servlet-name>AssignTicketServlet</servlet-name>
         <servlet-class>com.warranty.servlet.AssignTicketServlet</servlet-class>

@@ -9,13 +9,13 @@ WORKDIR /app
 # Copy pom.xml first for dependency caching
 COPY pom.xml .
 
-# Download dependencies (this layer will be cached)
+# Download dependencies (cached)
 RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY src ./src
 
-# Build the application
+# Build WAR
 RUN mvn clean package -DskipTests
 
 # ============================================
@@ -26,8 +26,16 @@ FROM tomcat:9.0-jdk11
 # Remove default webapps
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy WAR file from builder stage
+# Copy WAR from builder stage
 COPY --from=builder /app/target/warranty-system.war /usr/local/tomcat/webapps/ROOT.war
+
+# Install unzip (WAR = zip) để bung WAR
+RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
+
+# Unpack WAR trước khi run Tomcat
+RUN cd /usr/local/tomcat/webapps && \
+    unzip ROOT.war -d ROOT && \
+    rm ROOT.war
 
 # Expose port 8080
 EXPOSE 8080

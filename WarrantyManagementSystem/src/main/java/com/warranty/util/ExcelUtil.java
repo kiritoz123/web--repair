@@ -72,7 +72,7 @@ public class ExcelUtil {
                 return cell.getStringCellValue().trim();
                 
             case NUMERIC:
-                if (DateUtil.isCellDateFormatted(cell)) {
+                if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
                     return new Date(cell.getDateCellValue().getTime());
                 } else {
                     double numericValue = cell.getNumericCellValue();

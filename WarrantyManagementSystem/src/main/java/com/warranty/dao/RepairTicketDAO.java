@@ -323,4 +323,26 @@ public class RepairTicketDAO {
         
         return ticket;
     }
+    
+    /**
+     * Count tickets by year (for generating ticket number)
+     */
+    public int countTicketsByYear(int year) {
+        String sql = "SELECT COUNT(*) FROM repair_tickets WHERE YEAR(received_date) = ?";
+        
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, year);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

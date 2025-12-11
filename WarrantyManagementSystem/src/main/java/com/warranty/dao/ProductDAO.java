@@ -1,7 +1,7 @@
 package com.warranty.dao;
 
 import com.warranty.model.Product;
-import com.warranty.util.DatabaseConnection;
+import com.warranty.util.DatabaseUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class ProductDAO {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM products ORDER BY product_name";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             
@@ -35,7 +35,7 @@ public class ProductDAO {
     public Product getProductById(int productId) {
         String sql = "SELECT * FROM products WHERE product_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, productId);
@@ -56,7 +56,7 @@ public class ProductDAO {
     public Product getProductByCode(String productCode) {
         String sql = "SELECT * FROM products WHERE product_code = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, productCode);
@@ -78,7 +78,7 @@ public class ProductDAO {
         String sql = "INSERT INTO products (product_code, product_name, category, brand, model, " +
                      "description, warranty_period_months) VALUES (?, ?, ?, ?, ?, ?, ?)";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             stmt.setString(1, product.getProductCode());
@@ -111,7 +111,7 @@ public class ProductDAO {
         String sql = "UPDATE products SET product_code=?, product_name=?, category=?, brand=?, " +
                      "model=?, description=?, warranty_period_months=? WHERE product_id=?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, product.getProductCode());
@@ -136,7 +136,7 @@ public class ProductDAO {
     public boolean deleteProduct(int productId) {
         String sql = "DELETE FROM products WHERE product_id=?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, productId);
@@ -155,7 +155,7 @@ public class ProductDAO {
         String sql = "SELECT * FROM products WHERE product_name LIKE ? OR product_code LIKE ? " +
                      "OR brand LIKE ? OR category LIKE ? ORDER BY product_name";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             String searchPattern = "%" + keyword + "%";

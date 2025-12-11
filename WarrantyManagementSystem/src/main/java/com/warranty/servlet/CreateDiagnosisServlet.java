@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * Servlet for creating diagnosis report and cost estimate
@@ -88,7 +89,7 @@ public class CreateDiagnosisServlet extends HttpServlet {
 
             // Update ticket info
             // TODO: Save diagnosis details to database
-            ticket.setTotalCost(isUnderWarranty ? 0.0 : totalCost);
+            ticket.setTotalCost(isUnderWarranty ? BigDecimal.ZERO : BigDecimal.valueOf(totalCost));
             
             // ========== BƯỚC 3: ĐỔI TRẠNG THÁI ==========
             // Nếu thuộc BH → IN_PROGRESS (sửa luôn)

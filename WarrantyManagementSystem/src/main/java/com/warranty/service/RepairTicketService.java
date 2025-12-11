@@ -3,6 +3,7 @@ package com.warranty.service;
 import com.warranty.dao.RepairTicketDAO;
 import com.warranty.model.RepairTicket;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -173,7 +174,7 @@ public class RepairTicketService {
         }
 
         // Check payment
-        if (ticket.getTotalCost() > 0 && !ticket.isPaid()) {
+        if (ticket.getTotalCost().compareTo(BigDecimal.ZERO) > 0 && !ticket.isPaid()) {
             throw new IllegalStateException("Ticket must be paid before delivery");
         }
 

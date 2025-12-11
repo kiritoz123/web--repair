@@ -1,7 +1,7 @@
 package com.warranty.dao;
 
 import com.warranty.model.InventoryItem;
-import com.warranty.util.DatabaseConnection;
+import com.warranty.util.DatabaseUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class InventoryItemDAO {
         List<InventoryItem> items = new ArrayList<>();
         String sql = "SELECT * FROM inventory_items ORDER BY part_name";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             
@@ -35,7 +35,7 @@ public class InventoryItemDAO {
     public InventoryItem getItemById(int itemId) {
         String sql = "SELECT * FROM inventory_items WHERE item_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, itemId);
@@ -56,7 +56,7 @@ public class InventoryItemDAO {
     public InventoryItem getItemByPartNumber(String partNumber) {
         String sql = "SELECT * FROM inventory_items WHERE part_number = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, partNumber);
@@ -79,7 +79,7 @@ public class InventoryItemDAO {
                      "description, quantity_available, min_quantity, unit_price, location) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             stmt.setString(1, item.getPartNumber());
@@ -115,7 +115,7 @@ public class InventoryItemDAO {
                      "supplier=?, description=?, quantity_available=?, min_quantity=?, " +
                      "unit_price=?, location=? WHERE item_id=?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, item.getPartNumber());
@@ -142,7 +142,7 @@ public class InventoryItemDAO {
     public boolean deleteItem(int itemId) {
         String sql = "DELETE FROM inventory_items WHERE item_id=?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, itemId);
@@ -160,7 +160,7 @@ public class InventoryItemDAO {
         String sql = "UPDATE inventory_items SET quantity_available = quantity_available + ? " +
                      "WHERE item_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, quantity);
@@ -180,7 +180,7 @@ public class InventoryItemDAO {
         String sql = "UPDATE inventory_items SET quantity_available = quantity_available - ? " +
                      "WHERE item_id = ? AND quantity_available >= ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, quantity);
@@ -202,7 +202,7 @@ public class InventoryItemDAO {
         String sql = "SELECT * FROM inventory_items WHERE quantity_available <= min_quantity " +
                      "ORDER BY part_name";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             
@@ -223,7 +223,7 @@ public class InventoryItemDAO {
         String sql = "SELECT * FROM inventory_items WHERE part_name LIKE ? OR part_number LIKE ? " +
                      "OR category LIKE ? ORDER BY part_name";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             String searchPattern = "%" + keyword + "%";

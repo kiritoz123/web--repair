@@ -101,19 +101,19 @@
                     <a href="${pageContext.request.contextPath}/technician/dashboard" class="active">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="${pageContext.request.contextPath}/views/technician/my-tickets.jsp">
+                    <a href="${pageContext.request.contextPath}/technician/my-tickets">
                         <i class="fas fa-clipboard-list"></i> Đơn của tôi
                     </a>
-                    <a href="${pageContext.request.contextPath}/views/technician/create-warranty-slip.jsp">
+                    <a href="${pageContext.request.contextPath}/technician/create-diagnosis">
                         <i class="fas fa-file-medical"></i> Tạo phiếu BH
                     </a>
-                    <a href="${pageContext.request.contextPath}/views/technician/request-parts.jsp">
+                    <a href="${pageContext.request.contextPath}/technician/request-parts">
                         <i class="fas fa-toolbox"></i> Yêu cầu linh kiện
                     </a>
-                    <a href="${pageContext.request.contextPath}/views/technician/update-progress.jsp">
+                    <a href="${pageContext.request.contextPath}/technician/update-progress">
                         <i class="fas fa-tasks"></i> Cập nhật tiến độ
                     </a>
-                    <a href="${pageContext.request.contextPath}/views/technician/create-invoice.jsp">
+                    <a href="${pageContext.request.contextPath}/technician/create-invoice">
                         <i class="fas fa-receipt"></i> Tạo phiếu thanh toán
                     </a>
                     
@@ -209,14 +209,14 @@
                                         </a>
                                     </div>
                                     <div class="col-md-3">
-                                        <a href="${pageContext.request.contextPath}/views/technician/request-parts.jsp" 
+                                        <a href="${pageContext.request.contextPath}/technician/request-parts" 
                                            class="btn btn-lg btn-outline-warning w-100 mb-3">
                                             <i class="fas fa-toolbox fa-2x d-block mb-2"></i>
                                             Yêu cầu linh kiện
                                         </a>
                                     </div>
                                     <div class="col-md-3">
-                                        <a href="${pageContext.request.contextPath}/views/technician/create-invoice.jsp" 
+                                        <a href="${pageContext.request.contextPath}/technician/create-invoice" 
                                            class="btn btn-lg btn-outline-info w-100 mb-3">
                                             <i class="fas fa-receipt fa-2x d-block mb-2"></i>
                                             Tạo phiếu TT

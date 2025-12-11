@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +34,15 @@ public class RequestPartsServlet extends HttpServlet {
         }
 
         // ========== LẤY LỊCH SỬ YÊU CẦU CỦA TECHNICIAN ==========
-        Integer technicianId = (Integer) request.getSession().getAttribute("userId");
-        List<PartsRequest> myRequests = partsRequestDAO.getRequestsByTechnician(technicianId);
-        
-        request.setAttribute("myRequests", myRequests);
+        try {
+            Integer technicianId = (Integer) request.getSession().getAttribute("userId");
+            List<PartsRequest> myRequests = partsRequestDAO.getRequestsByTechnician(technicianId);
+            
+            request.setAttribute("myRequests", myRequests);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("myRequests", new ArrayList<>());
+        }
 
         // Forward to request parts page
         request.getRequestDispatcher("/views/technician/request-parts.jsp").forward(request, response);

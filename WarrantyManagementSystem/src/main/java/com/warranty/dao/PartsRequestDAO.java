@@ -2,7 +2,7 @@ package com.warranty.dao;
 
 import com.warranty.model.PartsRequest;
 import com.warranty.model.PartsRequestItem;
-import com.warranty.util.DatabaseConnection;
+import com.warranty.util.DatabaseUtil;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class PartsRequestDAO {
         PreparedStatement stmt2 = null;
         
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = DatabaseUtil.getConnection();
             conn.setAutoCommit(false);
             
             // 1. Insert parts_requests
@@ -83,7 +83,7 @@ public class PartsRequestDAO {
                      "LEFT JOIN repair_tickets rt ON pr.ticket_id = rt.ticket_id " +
                      "WHERE pr.request_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, requestId);
@@ -111,7 +111,7 @@ public class PartsRequestDAO {
                      "LEFT JOIN inventory_items ii ON pri.inventory_item_id = ii.item_id " +
                      "WHERE pri.request_id = ?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, requestId);
@@ -145,7 +145,7 @@ public class PartsRequestDAO {
                      "WHERE pr.technician_id = ? " +
                      "ORDER BY pr.request_date DESC";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, technicianId);
@@ -170,7 +170,7 @@ public class PartsRequestDAO {
                      "WHERE pr.ticket_id = ? " +
                      "ORDER BY pr.request_date DESC";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, ticketId);
@@ -205,7 +205,7 @@ public class PartsRequestDAO {
                      "WHERE pr.status IN (" + inClause + ") " +
                      "ORDER BY pr.request_date DESC";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             for (int i = 0; i < statuses.length; i++) {
@@ -232,7 +232,7 @@ public class PartsRequestDAO {
         String sql = "UPDATE parts_requests SET status=?, processed_by=?, " +
                      "processed_date=NOW(), processing_notes=? WHERE request_id=?";
         
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, status);
@@ -254,7 +254,7 @@ public class PartsRequestDAO {
         PreparedStatement stmt3 = null;
         
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = DatabaseUtil.getConnection();
             conn.setAutoCommit(false);
             
             // 1. Get request items
@@ -316,7 +316,7 @@ public class PartsRequestDAO {
         PreparedStatement stmt2 = null;
         
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = DatabaseUtil.getConnection();
             conn.setAutoCommit(false);
             
             // Delete items first
@@ -359,7 +359,7 @@ public class PartsRequestDAO {
         pr.setTechnicianId(rs.getInt("technician_id"));
         pr.setRequestDate(rs.getTimestamp("request_date"));
         pr.setPriority(rs.getString("priority"));
-        pr.setStatus(rs.getString("status"));
+        pr.setStatus(PartsRequest.RequestStatus.valueOf(rs.getString("status")));
         pr.setNotes(rs.getString("notes"));
         pr.setProcessedBy(rs.getInt("processed_by"));
         pr.setProcessedDate(rs.getTimestamp("processed_date"));

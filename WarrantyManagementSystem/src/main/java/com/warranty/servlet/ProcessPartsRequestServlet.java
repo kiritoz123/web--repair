@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -31,14 +32,19 @@ public class ProcessPartsRequestServlet extends HttpServlet {
         }
 
         // ========== LẤY DANH SÁCH YÊU CẦU CHỜ DUYỆT ==========
-        List<PartsRequest> pendingRequests = partsRequestDAO.getRequestsByStatus(
-            PartsRequest.RequestStatus.PENDING
-        );
+        try {
+            List<PartsRequest> pendingRequests = partsRequestDAO.getRequestsByStatus(
+                PartsRequest.RequestStatus.PENDING.name()
+            );
 
-        request.setAttribute("pendingRequests", pendingRequests);
+            request.setAttribute("pendingRequests", pendingRequests);
 
-        // Forward to warehouse page
-        request.getRequestDispatcher("/views/warehouse/process-request.jsp").forward(request, response);
+            // Forward to warehouse page
+            request.getRequestDispatcher("/views/warehouse/process-request.jsp").forward(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
+        }
     }
 
     @Override
@@ -88,14 +94,14 @@ public class ProcessPartsRequestServlet extends HttpServlet {
                 // TODO: Reduce inventory quantities
                 // TODO: Update ticket status to IN_PROGRESS (if was WAITING_PARTS)
                 
-                success = partsRequestDAO.updateRequestStatus(requestId, newStatus, warehouseStaffId, notes);
+                success = partsRequestDAO.updateRequestStatus(requestId, newStatus.name(), warehouseStaffId, notes);
                 message = "Đã duyệt yêu cầu! Linh kiện đã được xuất kho.";
                 
             } else if ("reject".equals(action)) {
                 // TỪ CHỐI YÊU CẦU
                 newStatus = PartsRequest.RequestStatus.REJECTED;
                 
-                success = partsRequestDAO.updateRequestStatus(requestId, newStatus, warehouseStaffId, notes);
+                success = partsRequestDAO.updateRequestStatus(requestId, newStatus.name(), warehouseStaffId, notes);
                 message = "Đã từ chối yêu cầu. Lý do: " + notes;
                 
             } else {

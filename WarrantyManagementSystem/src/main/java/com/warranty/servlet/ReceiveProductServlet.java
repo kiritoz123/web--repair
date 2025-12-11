@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -76,9 +78,9 @@ public class ReceiveProductServlet extends HttpServlet {
             }
 
             // Kiểm tra thời hạn bảo hành
-            LocalDate purchaseDate = productSerial.getPurchaseDate();
-            LocalDate today = LocalDate.now();
-            long monthsSincePurchase = ChronoUnit.MONTHS.between(purchaseDate, today);
+            Date purchaseDate = productSerial.getPurchaseDate();
+            Date today = new Date(System.currentTimeMillis());
+            long monthsSincePurchase = ChronoUnit.MONTHS.between(purchaseDate.toLocalDate(), today.toLocalDate());
             int warrantyMonths = productSerial.getWarrantyMonths();
             
             boolean isUnderWarranty = monthsSincePurchase < warrantyMonths;

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * Servlet for delivering repaired product to customer
@@ -70,7 +71,7 @@ public class DeliverProductServlet extends HttpServlet {
             }
 
             // ========== BƯỚC 3: KIỂM TRA THANH TOÁN ==========
-            if (ticket.getTotalCost() > 0 && !ticket.isPaid()) {
+            if (ticket.getTotalCost().compareTo(BigDecimal.ZERO) > 0 && !ticket.isPaid()) {
                 throw new IllegalStateException("Khách hàng chưa thanh toán! Vui lòng thu tiền trước.");
             }
 
